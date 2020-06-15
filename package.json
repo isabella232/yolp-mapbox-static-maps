@@ -1,6 +1,6 @@
 {
-  "name": "yolp-mapbox-static-maps",
-  "version": "0.0.0",
+  "name": "@mapbox/yolp-mapbox-static-maps",
+  "version": "0.1.0",
   "description": "",
   "keywords": [],
   "main": "dist/yolp-mapbox-static-maps.umd.js",
@@ -17,10 +17,6 @@
   "license": "MIT",
   "engines": {
     "node": ">=6.0.0"
-  },
-  "resolutions": {
-    "@turf/nearest-point-to-line": "6.0.0",
-    "@turf/point-to-line-distance": "6.0.0"
   },
   "scripts": {
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",

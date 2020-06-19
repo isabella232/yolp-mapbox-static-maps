@@ -1129,10 +1129,10 @@
     is-module "^1.0.0"
     resolve "^1.14.2"
 
-"@rollup/plugin-typescript@^4.1.2":
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/@rollup/plugin-typescript/-/plugin-typescript-4.1.2.tgz#6f910430276ae3e53a47a12ad65820627e7b6ad9"
-  integrity sha512-+7UlGat/99e2JbmGNnIauxwEhYLwrL7adO/tSJxUN57xrrS3Ps+ZzYpLCDGPZJ57j+ZJTZLLN89KXW9JMEB+jg==
+"@rollup/plugin-typescript@3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@rollup/plugin-typescript/-/plugin-typescript-3.1.1.tgz#a39175a552ed82a3e424862e6bb403bf9da451ee"
+  integrity sha512-VPY1MbzIJT+obpav9Kns4MlipVJ1FuefwzO4s1uCVXAzVWya+bhhNauOmmqR/hy1zj7tePfh3t9iBN+HbIzyRA==
   dependencies:
     "@rollup/pluginutils" "^3.0.1"
     resolve "^1.14.1"
@@ -4937,6 +4937,11 @@ fsevents@^1.2.3:
   dependencies:
     bindings "^1.5.0"
     nan "^2.12.1"
+
+fsevents@~2.1.2:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.1.3.tgz#fb738703ae8d2f9fe900c33836ddebee8b97f23e"
+  integrity sha512-Auw9a4AxqWpa9GUfj370BMPzzyncfBABW8Mab7BGWBYDj4Isgq+cDKtx0i6u9jcX9pQDnswsaaOTgTmA5pEjuQ==
 
 function-bind@^1.1.1:
   version "1.1.1"
@@ -9332,13 +9337,12 @@ rollup-pluginutils@^2.0.1:
   dependencies:
     estree-walker "^0.6.1"
 
-rollup@^0.67.0:
-  version "0.67.4"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.67.4.tgz#8ed6b0993337f84ec8a0387f824fa6c197e833ec"
-  integrity sha512-AVuP73mkb4BBMUmksQ3Jw0jTrBTU1i7rLiUYjFxLZGb3xiFmtVEg40oByphkZAsiL0bJC3hRAJUQos/e5EBd+w==
-  dependencies:
-    "@types/estree" "0.0.39"
-    "@types/node" "*"
+rollup@^2.17.1:
+  version "2.17.1"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.17.1.tgz#d01a27c1b76e42efe2cd786609589f6332e81aa6"
+  integrity sha512-lVrtCXJ+08Eapa0SfApLmRNWNWm2FsYFnLPIJZJvZz2uI2Gv+dfPyu1zgF7KKF/HYFJDvjxbdCbI8lUVMnG7Sg==
+  optionalDependencies:
+    fsevents "~2.1.2"
 
 rsvp@^3.3.3:
   version "3.6.2"

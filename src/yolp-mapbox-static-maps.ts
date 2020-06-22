@@ -1,6 +1,6 @@
 // @ts-ignore
-import * as polyline from '@mapbox/polyline';
-import { circle } from '@turf/turf';
+import * as polyline from '@mapbox/polyline'
+import { circle } from '@turf/turf'
 import 'url-search-params-polyfill'
 
 type KeyValue = { [id: string]: string }
@@ -41,7 +41,7 @@ export const convert = (url: string, opts: ConvertOpts): ConvertOutput => {
   }
 
   const token = opts.mapboxToken
-  const params = new URLSearchParams(url);
+  const params = new URLSearchParams(url)
 
   const [heightok, height] = toFloat(params.get('height'))
   if (heightok !== true) {
@@ -84,19 +84,17 @@ export const convert = (url: string, opts: ConvertOpts): ConvertOutput => {
 
   if (requireLatLng(overlay)) {
     if (latok !== true) {
-      // if (isNaN(lat) || params.get('lat') === '') {
       throw new TypeError('`lat` must be a valid number')
     }
 
     if (lngok !== true) {
-      // if (isNaN(lng) || params.get('lon') === '') {
       throw new TypeError('`lon` must be a valid number')
     }
   }
 
-  const mode = params.get('mode');
+  const mode = params.get('mode')
 
-  const [acct, onlyStyle] = modeToAcctStyle(opts.style, mode);
+  const [acct, onlyStyle] = modeToAcctStyle(opts.style, mode)
   if (acct) {
     opts.accountId = acct
   }
@@ -105,10 +103,12 @@ export const convert = (url: string, opts: ConvertOpts): ConvertOutput => {
   const latlngz = getLatLngZoom(overlay, line, lat, lng, zparam)
 
   if (overlay.length > 0) {
-    return `https://api.mapbox.com/styles/v1/${style}/static/${overlay.join(',')}/${latlngz}/${width}x${height}?access_token=${token}`;
+    return `https://api.mapbox.com/styles/v1/${style}/static/${overlay.join(
+      ','
+    )}/${latlngz}/${width}x${height}?access_token=${token}`
   }
-  return `https://api.mapbox.com/styles/v1/${style}/static/${latlngz}/${width}x${height}?access_token=${token}`;
-};
+  return `https://api.mapbox.com/styles/v1/${style}/static/${latlngz}/${width}x${height}?access_token=${token}`
+}
 
 const requireLatLng = (overlay: string[]) => {
   return overlay.length === 0
@@ -128,9 +128,14 @@ const convertZparamToNumber = (zparam: string | null): number => {
 }
 
 // @ts-ignore
-const getLatLngZoom = (overlay: string[], line?: string, lat?: number, lng?: number, zparam: string | null) => {
+const getLatLngZoom = (
+  overlay: string[],
+  line?: string,
+  lat?: number,
+  lng?: number,
+  zparam: string | null
+) => {
   if (overlay.length === 0 && !line) {
-    // lat lng are required
     const zoom = convertZparamToNumber(zparam!)
     return `${lng},${lat},${zoom}`
   }
@@ -142,14 +147,14 @@ const getLatLngZoom = (overlay: string[], line?: string, lat?: number, lng?: num
 }
 
 const convertPtoPins = (params: URLSearchParams): string => {
-  const pins = findPins(params);
-  const overlay = [];
+  const pins = findPins(params)
+  const overlay = []
   for (const pin in pins) {
     if (!pins.hasOwnProperty(pin)) {
       continue
     }
-    const num = pin.replace('pin', '');
-    const pin1 = params.get(pin);
+    const num = pin.replace('pin', '')
+    const pin1 = params.get(pin)
     if (!pin1) {
       continue
     }
@@ -159,41 +164,41 @@ const convertPtoPins = (params: URLSearchParams): string => {
     // （3）：[string]（UTF-8でURLエンコードされた）ラベル（省略可）
     // （4）：[color]色（red, blue, green, yellow, 省略可）
     // 例）pin1=35,135,test&pin2=35.156418,136.876035,test2&pin3=35.1,136.5,test,red
-    const list = pin1.split(',');
+    const list = pin1.split(',')
     if (list.length < 2) {
       continue
     }
 
     // https://docs.mapbox.com/api/maps/#marker
     // Marker shape and size. Options are pin-s and pin-l.
-    const name = 'pin-s';
+    const name = 'pin-s'
     // Marker symbol. Options are an alphanumeric label a through z, 0 through 99, or a valid Maki icon. If a letter is requested, it will be rendered in uppercase only.
-    const label = num ? num.charAt(0) : '';
+    const label = num ? num.charAt(0) : ''
     // A 3- or 6-digit hexadecimal color code.
-    const color = list.length === 4 ? colorNameToHex(list[3]) : 'FF0000';
+    const color = list.length === 4 ? colorNameToHex(list[3]) : 'FF0000'
     // The location at which to center the marker. When using an asymmetric marker, make sure that the tip of the pin is at the center of the image.
-    overlay.push(`${name}-${label}+${color}(${list[1]},${list[0]})`);
+    overlay.push(`${name}-${label}+${color}(${list[1]},${list[0]})`)
   }
 
   return overlay.join(',')
 }
 
 const findPins = (params: URLSearchParams): KeyValue => {
-  const pinMap: KeyValue = {};
+  const pinMap: KeyValue = {}
   const pinkey = /^pin\w+$/
   // @ts-ignore
   for (const [key, value] of params?.entries() as IterableIterator<[string, string]>) {
     if (!pinkey.test(key)) {
       continue
     }
-    pinMap[key] = value;
+    pinMap[key] = value
   }
-  return pinMap;
-};
+  return pinMap
+}
 
 const componentToHex = (c: number) => {
-  const hex = c.toString(16);
-  return hex.length === 1 ? "0" + hex : hex;
+  const hex = c.toString(16)
+  return hex.length === 1 ? '0' + hex : hex
 }
 
 const rgbToHex = (r: string | null, g: string | null, b: string | null) => {
@@ -209,11 +214,10 @@ const rgbToHex = (r: string | null, g: string | null, b: string | null) => {
   if (blueok !== true) {
     blue = 0
   }
-  return componentToHex(red) + componentToHex(green) + componentToHex(blue);
+  return componentToHex(red) + componentToHex(green) + componentToHex(blue)
 }
 
 const modeToAcctStyle = (style: string, mode: string | null): [string | undefined, string] => {
-
   // YOLPで使用されている`mode`属性は地図の種類を示す。
   //      map - 通常の地図
   //      photo - 航空写真
@@ -224,20 +228,19 @@ const modeToAcctStyle = (style: string, mode: string | null): [string | undefine
   //      osm - OpenStreetMap
 
   if (!mode) {
-    return [undefined, style];
+    return [undefined, style]
   }
   switch (mode) {
     case 'photo':
-      return ['mapbox', 'satellite-v9'];
-    default: // returns whatever is set by the client
+      return ['mapbox', 'satellite-v9']
+    default:
+      // returns whatever is set by the client
       return [undefined, style]
   }
-};
-
-
+}
 
 const convertLtoLinePath = (params: URLSearchParams): string | undefined => {
-  const line = params.get('l');
+  const line = params.get('l')
   if (!line) {
     return
   }
@@ -260,7 +263,7 @@ const convertLtoLinePath = (params: URLSearchParams): string | undefined => {
 
   const lineParts = line.split(':')
   const parts = lineParts.reduce((prev: string[], part: string) => {
-    const linelist = part.split(',');
+    const linelist = part.split(',')
     // ignore if one lat,lng is not specified
     if (linelist.length < 7) {
       return prev
@@ -278,22 +281,22 @@ const convertLtoLinePath = (params: URLSearchParams): string | undefined => {
       }
       if (idx % 2 === 1) {
         // lng
-        p[p.length - 1][1] = val;
+        p[p.length - 1][1] = val
       } else {
-        p.push([val]);
+        p.push([val])
       }
-      return p;
-    }, []);
-    const encodedPolyline = polyline.encode(coords);
-    const path = `path-${strokeWidth}+${color}-${opacity}(${encodeURIComponent(encodedPolyline)})`;
+      return p
+    }, [])
+    const encodedPolyline = polyline.encode(coords)
+    const path = `path-${strokeWidth}+${color}-${opacity}(${encodeURIComponent(encodedPolyline)})`
     prev.push(path)
-    return prev;
+    return prev
   }, [])
   return parts.join(',')
-};
+}
 
 const convertPtoPolygon = (params: URLSearchParams): string | undefined => {
-  const p = params.get('p');
+  const p = params.get('p')
   if (!p) {
     return
   }
@@ -320,8 +323,7 @@ const convertPtoPolygon = (params: URLSearchParams): string | undefined => {
 
   const polygonParts = p.split(':')
   const parts = polygonParts.reduce((prev: string[], part: string) => {
-
-    const linelist = part.split(',');
+    const linelist = part.split(',')
     // 緯度と経度のペアを3つ以上指定する必要があります。複数のポリゴンを描画する場合は、「:（コロン）」で区切ります。
     if (linelist.length < 15) {
       return prev
@@ -332,7 +334,7 @@ const convertPtoPolygon = (params: URLSearchParams): string | undefined => {
       strokeWidth = 0
     }
     const strokeOpacity = convertOpacity(linelist[3])
-    const fillColor = rgbToHex(linelist[5], linelist[6], linelist[7]);
+    const fillColor = rgbToHex(linelist[5], linelist[6], linelist[7])
     const fillOpacity = convertOpacity(linelist[8])
 
     const coords = linelist.slice(9).reduce((p: number[][], c: string, idx: number) => {
@@ -342,22 +344,24 @@ const convertPtoPolygon = (params: URLSearchParams): string | undefined => {
       }
       if (idx % 2 === 1) {
         // lng
-        p[p.length - 1][1] = val;
+        p[p.length - 1][1] = val
       } else {
-        p.push([val]);
+        p.push([val])
       }
-      return p;
-    }, []);
-    const encodedPolyline = polyline.encode(coords);
-    const path = `path-${strokeWidth}+${strokeColor}-${strokeOpacity}+${fillColor}-${fillOpacity}(${encodeURIComponent(encodedPolyline)})`;
+      return p
+    }, [])
+    const encodedPolyline = polyline.encode(coords)
+    const path = `path-${strokeWidth}+${strokeColor}-${strokeOpacity}+${fillColor}-${fillOpacity}(${encodeURIComponent(
+      encodedPolyline
+    )})`
     prev.push(path)
-    return prev;
+    return prev
   }, [])
   return parts.join(',')
-};
+}
 
 const convertEtoCircle = (params: URLSearchParams): string | undefined => {
-  const e = params.get('e');
+  const e = params.get('e')
   if (!e) {
     return
   }
@@ -385,8 +389,7 @@ const convertEtoCircle = (params: URLSearchParams): string | undefined => {
 
   const polygonParts = e.split(':')
   const parts = polygonParts.reduce((prev: string[], part: string) => {
-
-    const linelist = part.split(',');
+    const linelist = part.split(',')
     // 緯度と経度のペアを3つ以上指定する必要があります。複数のポリゴンを描画する場合は、「:（コロン）」で区切ります。
     if (linelist.length < 12) {
       return prev
@@ -415,24 +418,26 @@ const convertEtoCircle = (params: URLSearchParams): string | undefined => {
       return prev
     }
 
-    const center = [lng, lat];
-    const options = { steps: 40, units: 'meters' };
+    const center = [lng, lat]
+    const options = { steps: 40, units: 'meters' }
     // @ts-ignore
     const circlePolygon = circle(center, radius, options)
     if ((circlePolygon.geometry?.coordinates ?? []).length === 0) {
       // TODO how to track this error
       return prev
     }
-    const fmted = circlePolygon.geometry?.coordinates[0].map((val) => {
+    const fmted = circlePolygon.geometry?.coordinates[0].map(val => {
       return [val[1], val[0]]
     })
-    const encodedPolyline = polyline.encode(fmted);
-    const path = `path-${strokeWidth}+${strokeColor}-${strokeOpacity}+${fillColor}-${fillOpacity}(${encodeURIComponent(encodedPolyline)})`;
+    const encodedPolyline = polyline.encode(fmted)
+    const path = `path-${strokeWidth}+${strokeColor}-${strokeOpacity}+${fillColor}-${fillOpacity}(${encodeURIComponent(
+      encodedPolyline
+    )})`
     prev.push(path)
-    return prev;
+    return prev
   }, [])
   return parts.join(',')
-};
+}
 
 // 127 -> 0
 // 0 -> 1
@@ -443,36 +448,153 @@ const convertOpacity = (val: string) => {
   }
   let fmtFillOpacity = Math.min(1, Math.max(1 - fillOpacity / 127, 0))
   // fixing to 2 dec places to avoid URL length limit
-  return Math.round(fmtFillOpacity * 100) / 100;
+  return Math.round(fmtFillOpacity * 100) / 100
 }
 
 const colorNameToHex = (color: string): string => {
   const colors: { [id: string]: string | undefined } = {
-    "aliceblue": "f0f8ff", "antiquewhite": "faebd7", "aqua": "00ffff", "aquamarine": "7fffd4", "azure": "f0ffff",
-    "beige": "f5f5dc", "bisque": "ffe4c4", "black": "000000", "blanchedalmond": "ffebcd", "blue": "0000ff", "blueviolet": "8a2be2", "brown": "a52a2a", "burlywood": "deb887",
-    "cadetblue": "5f9ea0", "chartreuse": "7fff00", "chocolate": "d2691e", "coral": "ff7f50", "cornflowerblue": "6495ed", "cornsilk": "fff8dc", "crimson": "dc143c", "cyan": "00ffff",
-    "darkblue": "00008b", "darkcyan": "008b8b", "darkgoldenrod": "b8860b", "darkgray": "a9a9a9", "darkgreen": "006400", "darkkhaki": "bdb76b", "darkmagenta": "8b008b", "darkolivegreen": "556b2f",
-    "darkorange": "ff8c00", "darkorchid": "9932cc", "darkred": "8b0000", "darksalmon": "e9967a", "darkseagreen": "8fbc8f", "darkslateblue": "483d8b", "darkslategray": "2f4f4f", "darkturquoise": "00ced1",
-    "darkviolet": "9400d3", "deeppink": "ff1493", "deepskyblue": "00bfff", "dimgray": "696969", "dodgerblue": "1e90ff",
-    "firebrick": "b22222", "floralwhite": "fffaf0", "forestgreen": "228b22", "fuchsia": "ff00ff",
-    "gainsboro": "dcdcdc", "ghostwhite": "f8f8ff", "gold": "ffd700", "goldenrod": "daa520", "gray": "808080", "green": "008000", "greenyellow": "adff2f",
-    "honeydew": "f0fff0", "hotpink": "ff69b4",
-    "indianred ": "cd5c5c", "indigo": "4b0082", "ivory": "fffff0", "khaki": "f0e68c",
-    "lavender": "e6e6fa", "lavenderblush": "fff0f5", "lawngreen": "7cfc00", "lemonchiffon": "fffacd", "lightblue": "add8e6", "lightcoral": "f08080", "lightcyan": "e0ffff", "lightgoldenrodyellow": "fafad2",
-    "lightgrey": "d3d3d3", "lightgreen": "90ee90", "lightpink": "ffb6c1", "lightsalmon": "ffa07a", "lightseagreen": "20b2aa", "lightskyblue": "87cefa", "lightslategray": "778899", "lightsteelblue": "b0c4de",
-    "lightyellow": "ffffe0", "lime": "00ff00", "limegreen": "32cd32", "linen": "faf0e6",
-    "magenta": "ff00ff", "maroon": "800000", "mediumaquamarine": "66cdaa", "mediumblue": "0000cd", "mediumorchid": "ba55d3", "mediumpurple": "9370d8", "mediumseagreen": "3cb371", "mediumslateblue": "7b68ee",
-    "mediumspringgreen": "00fa9a", "mediumturquoise": "48d1cc", "mediumvioletred": "c71585", "midnightblue": "191970", "mintcream": "f5fffa", "mistyrose": "ffe4e1", "moccasin": "ffe4b5",
-    "navajowhite": "ffdead", "navy": "000080",
-    "oldlace": "fdf5e6", "olive": "808000", "olivedrab": "6b8e23", "orange": "ffa500", "orangered": "ff4500", "orchid": "da70d6",
-    "palegoldenrod": "eee8aa", "palegreen": "98fb98", "paleturquoise": "afeeee", "palevioletred": "d87093", "papayawhip": "ffefd5", "peachpuff": "ffdab9", "peru": "cd853f", "pink": "ffc0cb", "plum": "dda0dd", "powderblue": "b0e0e6", "purple": "800080",
-    "rebeccapurple": "663399", "red": "ff0000", "rosybrown": "bc8f8f", "royalblue": "4169e1",
-    "saddlebrown": "8b4513", "salmon": "fa8072", "sandybrown": "f4a460", "seagreen": "2e8b57", "seashell": "fff5ee", "sienna": "a0522d", "silver": "c0c0c0", "skyblue": "87ceeb", "slateblue": "6a5acd", "slategray": "708090", "snow": "fffafa", "springgreen": "00ff7f", "steelblue": "4682b4",
-    "tan": "d2b48c", "teal": "008080", "thistle": "d8bfd8", "tomato": "ff6347", "turquoise": "40e0d0",
-    "violet": "ee82ee",
-    "wheat": "f5deb3", "white": "ffffff", "whitesmoke": "f5f5f5",
-    "yellow": "ffff00", "yellowgreen": "9acd32"
-  };
+    aliceblue: 'f0f8ff',
+    antiquewhite: 'faebd7',
+    aqua: '00ffff',
+    aquamarine: '7fffd4',
+    azure: 'f0ffff',
+    beige: 'f5f5dc',
+    bisque: 'ffe4c4',
+    black: '000000',
+    blanchedalmond: 'ffebcd',
+    blue: '0000ff',
+    blueviolet: '8a2be2',
+    brown: 'a52a2a',
+    burlywood: 'deb887',
+    cadetblue: '5f9ea0',
+    chartreuse: '7fff00',
+    chocolate: 'd2691e',
+    coral: 'ff7f50',
+    cornflowerblue: '6495ed',
+    cornsilk: 'fff8dc',
+    crimson: 'dc143c',
+    cyan: '00ffff',
+    darkblue: '00008b',
+    darkcyan: '008b8b',
+    darkgoldenrod: 'b8860b',
+    darkgray: 'a9a9a9',
+    darkgreen: '006400',
+    darkkhaki: 'bdb76b',
+    darkmagenta: '8b008b',
+    darkolivegreen: '556b2f',
+    darkorange: 'ff8c00',
+    darkorchid: '9932cc',
+    darkred: '8b0000',
+    darksalmon: 'e9967a',
+    darkseagreen: '8fbc8f',
+    darkslateblue: '483d8b',
+    darkslategray: '2f4f4f',
+    darkturquoise: '00ced1',
+    darkviolet: '9400d3',
+    deeppink: 'ff1493',
+    deepskyblue: '00bfff',
+    dimgray: '696969',
+    dodgerblue: '1e90ff',
+    firebrick: 'b22222',
+    floralwhite: 'fffaf0',
+    forestgreen: '228b22',
+    fuchsia: 'ff00ff',
+    gainsboro: 'dcdcdc',
+    ghostwhite: 'f8f8ff',
+    gold: 'ffd700',
+    goldenrod: 'daa520',
+    gray: '808080',
+    green: '008000',
+    greenyellow: 'adff2f',
+    honeydew: 'f0fff0',
+    hotpink: 'ff69b4',
+    'indianred ': 'cd5c5c',
+    indigo: '4b0082',
+    ivory: 'fffff0',
+    khaki: 'f0e68c',
+    lavender: 'e6e6fa',
+    lavenderblush: 'fff0f5',
+    lawngreen: '7cfc00',
+    lemonchiffon: 'fffacd',
+    lightblue: 'add8e6',
+    lightcoral: 'f08080',
+    lightcyan: 'e0ffff',
+    lightgoldenrodyellow: 'fafad2',
+    lightgrey: 'd3d3d3',
+    lightgreen: '90ee90',
+    lightpink: 'ffb6c1',
+    lightsalmon: 'ffa07a',
+    lightseagreen: '20b2aa',
+    lightskyblue: '87cefa',
+    lightslategray: '778899',
+    lightsteelblue: 'b0c4de',
+    lightyellow: 'ffffe0',
+    lime: '00ff00',
+    limegreen: '32cd32',
+    linen: 'faf0e6',
+    magenta: 'ff00ff',
+    maroon: '800000',
+    mediumaquamarine: '66cdaa',
+    mediumblue: '0000cd',
+    mediumorchid: 'ba55d3',
+    mediumpurple: '9370d8',
+    mediumseagreen: '3cb371',
+    mediumslateblue: '7b68ee',
+    mediumspringgreen: '00fa9a',
+    mediumturquoise: '48d1cc',
+    mediumvioletred: 'c71585',
+    midnightblue: '191970',
+    mintcream: 'f5fffa',
+    mistyrose: 'ffe4e1',
+    moccasin: 'ffe4b5',
+    navajowhite: 'ffdead',
+    navy: '000080',
+    oldlace: 'fdf5e6',
+    olive: '808000',
+    olivedrab: '6b8e23',
+    orange: 'ffa500',
+    orangered: 'ff4500',
+    orchid: 'da70d6',
+    palegoldenrod: 'eee8aa',
+    palegreen: '98fb98',
+    paleturquoise: 'afeeee',
+    palevioletred: 'd87093',
+    papayawhip: 'ffefd5',
+    peachpuff: 'ffdab9',
+    peru: 'cd853f',
+    pink: 'ffc0cb',
+    plum: 'dda0dd',
+    powderblue: 'b0e0e6',
+    purple: '800080',
+    rebeccapurple: '663399',
+    red: 'ff0000',
+    rosybrown: 'bc8f8f',
+    royalblue: '4169e1',
+    saddlebrown: '8b4513',
+    salmon: 'fa8072',
+    sandybrown: 'f4a460',
+    seagreen: '2e8b57',
+    seashell: 'fff5ee',
+    sienna: 'a0522d',
+    silver: 'c0c0c0',
+    skyblue: '87ceeb',
+    slateblue: '6a5acd',
+    slategray: '708090',
+    snow: 'fffafa',
+    springgreen: '00ff7f',
+    steelblue: '4682b4',
+    tan: 'd2b48c',
+    teal: '008080',
+    thistle: 'd8bfd8',
+    tomato: 'ff6347',
+    turquoise: '40e0d0',
+    violet: 'ee82ee',
+    wheat: 'f5deb3',
+    white: 'ffffff',
+    whitesmoke: 'f5f5f5',
+    yellow: 'ffff00',
+    yellowgreen: '9acd32'
+  }
 
   return (colors[color.toLowerCase()] ?? fallbackPinColor).toUpperCase()
 }

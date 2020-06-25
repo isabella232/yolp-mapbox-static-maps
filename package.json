@@ -14,7 +14,7 @@
     "type": "git",
     "url": ""
   },
-  "license": "MIT",
+  "license": "BSD-2-Clause",
   "engines": {
     "node": ">=6.0.0"
   },

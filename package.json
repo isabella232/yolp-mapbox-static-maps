@@ -1,6 +1,6 @@
 {
   "name": "@mapbox/yolp-mapbox-static-maps",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "",
   "keywords": [],
   "main": "dist/yolp-mapbox-static-maps.umd.js",

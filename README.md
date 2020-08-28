@@ -8,9 +8,9 @@ YOLPスタティックイメージからMapbox Static Imagesへの移行JSライ
 ## インストール
 
 ```
-yarn add yolp-mapbox-static-maps
+yarn add @mapbox/yolp-mapbox-static-maps
 # 又は 
-npm run yolp-mapbox-static-maps
+npm install @mapbox/yolp-mapbox-static-maps
 ```
 
 ## 実装

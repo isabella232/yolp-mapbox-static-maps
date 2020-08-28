@@ -100,7 +100,7 @@ export const convert = (url: string, opts: ConvertOpts): ConvertOutput => {
   }
   const style = opts.accountId + '/' + onlyStyle
 
-  const latlngz = getLatLngZoom(overlay, line, lat, lng, zparam)
+  const latlngz = getLatLngZoom(zparam, overlay, line, lat, lng)
 
   if (overlay.length > 0) {
     return `https://api.mapbox.com/styles/v1/${style}/static/${overlay.join(
@@ -129,11 +129,11 @@ const convertZparamToNumber = (zparam: string | null): number => {
 
 // @ts-ignore
 const getLatLngZoom = (
+  zparam: string | null,
   overlay: string[],
   line?: string,
   lat?: number,
-  lng?: number,
-  zparam: string | null
+  lng?: number
 ) => {
   if (overlay.length === 0 && !line) {
     const zoom = convertZparamToNumber(zparam!)
